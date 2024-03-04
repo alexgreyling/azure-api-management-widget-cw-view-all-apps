@@ -1,0 +1,39 @@
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+
+# Local History for Visual Studio Code
+.history/
+
+# Built Visual Studio Code Extensions
+*.vsix
+
+# Node.js dependencies
+/node_modules
+
+# Compiled output
+/dist
+/out
+
+# Logs
+*.log
+
+# Environment variables
+.env
+
+# IDE-specific files
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# macOS specific files
+.DS_Store
+
+# Windows thumbnail cache files
+Thumbs.db
+
+

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" class="height-fill">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>View All Apps</title>
+  <link rel="stylesheet" href="./styles/app.scss">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+
+  <script type="module">
+    import {askForSecrets} from "@azure/api-management-custom-widgets-tools"
+    import App from "./index"
+
+    async function loadSecrets() {
+      const secrets = await askForSecrets("app")
+      const appInstance = new App(secrets)
+      if (!secrets.userId) return
+
+      appInstance.request(`/users/${secrets.userId}`)
+        .then(e => e.json())
+        .then(({properties}) => {
+          if (properties.email) document.getElementById("email").value = properties.email
+        })
+    }
+
+    loadSecrets()
+      .catch(e => console.error("Failed to retrieve secrets from the Developer Portal. The app might not work as expected!", e))
+      .finally(() => {
+        for (const element of document.getElementsByClassName("loading")) {
+          element.classList.remove("loading")
+        }
+      })
+  </script>
+</head>
+<body class="height-fill loading">
+  <div class="container">
+    <div class="row"> 
+  <div class="card" style="width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title" id="appName"></h5> 
+      <p class="card-text" id="appDescription"></p> 
+      <p class="card-text" id="appAPIKey"></p> 
+      <p class="card-text" id="appStatus"></p> 
+      <button type="button" class="btn btn-primary open-modal-btn">
+        Add Extension
+      </button>
+    </div>
+  </div>
+    </div>
+  </div>
+</body>
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+</html>
